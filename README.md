@@ -2,6 +2,10 @@
 
 Chrome extension that transforms exported n8n `workflow.json` files into Docsify-ready documentation with AI. Launch the panel, connect your preferred LLM provider, and review the polished README before printing to PDF.
 
+
+![8n docs video](https://github.com/user-attachments/assets/a73fe1a0-4a44-4f17-93f9-d83093d9a092)
+
+
 ## What it does
 
 - Guided two-step panel: drop an n8n export, then review the generated documentation in the same view.

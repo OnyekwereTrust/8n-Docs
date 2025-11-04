@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>8n Docs</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .popup-container {
+        width: 320px;
+        padding: 2rem 1.5rem;
+        background: linear-gradient(160deg, #000000, #030303 55%, #080808);
+        color: #ffffff;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .popup-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255, 125, 22, 0.45), transparent);
+      }
+
+      .logo-container {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .logo {
+        width: 64px;
+        height: 64px;
+        animation: logoFloat 3s ease-in-out infinite;
+      }
+
+      .logo-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 80px;
+        height: 80px;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 125, 22, 0.18);
+        filter: blur(20px);
+        border-radius: 50%;
+        z-index: -1;
+      }
+
+      .title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem;
+        background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.8));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .tagline {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin: 0 0 1.5rem;
+        line-height: 1.4;
+      }
+
+      .open-button {
+        background: #ff7d16;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .open-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .open-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 125, 22, 0.35);
+      }
+
+      .open-button:hover::before {
+        left: 100%;
+      }
+
+      .micro-copy {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.55);
+        margin-top: 1rem;
+      }
+
+      @keyframes logoFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 360px) {
+        .popup-container {
+          padding: 1.5rem 1rem;
+        }
+        
+        .logo {
+          width: 56px;
+          height: 56px;
+        }
+        
+        .title {
+          font-size: 1.25rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="popup">
+    <div class="popup-container">
+      <div class="logo-container">
+        <div class="logo-glow"></div>
+        <img src="../assets/logo.svg" alt="8n Docs Logo" class="logo">
+      </div>
+      <h1 class="title">8n Docs</h1>
+      <p class="tagline">Turn n8n workflows into documentation instantly</p>
+      <button id="open-panel" type="button" class="open-button">Open 8n Docs</button>
+      <p class="micro-copy">Powered by AI · LLM API Key Needed</p>
+    </div>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

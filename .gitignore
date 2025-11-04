@@ -1,0 +1,13 @@
+# macOS junk
+.DS_Store
+
+# Node bits
+node_modules/
+dist/
+
+# Logs and zips
+*.log
+*.zip
+
+#assets
+.assets

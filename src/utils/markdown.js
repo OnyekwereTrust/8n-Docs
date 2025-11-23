@@ -140,6 +140,41 @@ function escapeHtml(text) {
     .replace(/'/g, "&#39;");
 }
 
+export function validateDocumentation(markdown) {
+  if (!markdown || typeof markdown !== "string") {
+    return false;
+  }
+
+  const trimmed = markdown.trim();
+  if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) {
+    return false;
+  }
+
+  try {
+    const parsed = JSON.parse(trimmed);
+    if (!parsed || typeof parsed !== "object") {
+      return false;
+    }
+
+    // Check for at least one expected key to confirm it's our doc format
+    const expectedKeys = [
+      "workflow_description",
+      "workflow_diagram",
+      "nodes_settings",
+      "setup_instructions"
+    ];
+
+    const hasValidKey = expectedKeys.some(key =>
+      Object.prototype.hasOwnProperty.call(parsed, key) &&
+      typeof parsed[key] === "string"
+    );
+
+    return hasValidKey;
+  } catch (error) {
+    return false;
+  }
+}
+
 function escapeLang(lang) {
   return String(lang).replace(/[^a-z0-9-]/gi, "").toLowerCase();
 }

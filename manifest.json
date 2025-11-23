@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "8n Docs",
   "description": "Turn n8n workflows into professional documentation instantly with AI",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "action": {
     "default_popup": "src/popup.html",
     "default_icon": {
@@ -11,7 +11,6 @@
       "128": "assets/logo_round_128.png"
     }
   },
-  "permissions": ["storage"],
   "host_permissions": [
     "https://api.openai.com/*",
     "https://api.anthropic.com/*"
@@ -26,7 +25,8 @@
         "assets/logo_round_32.png",
         "assets/logo_round_48.png",
         "assets/logo_round_128.png",
-        "assets/logo_round_256.png"
+        "assets/logo_round_256.png",
+        "assets/github.svg"
       ],
       "matches": ["<all_urls>"]
     }

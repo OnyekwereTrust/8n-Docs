@@ -5,7 +5,8 @@ const SYSTEM_PROMPT = `You are an expert technical writer who produces precise, 
 - You always follow instructions exactly.
 - Your tone is concise, direct, and free of filler or marketing language.
 - When asked for JSON output, you return strictly valid JSON with the required keys and plain markdown string values.
-- Never include commentary outside the requested JSON payload.`;
+- Never include commentary outside the requested JSON payload.
+- Focus on the "why" and "how" of the workflow, not just listing nodes.`;
 
 const USER_PROMPT_TEMPLATE = `You will be given an n8n workflow export (JSON). Using it, produce documentation for Docsify.js that includes a Mermaid diagram. Follow these rules exactly:
 
@@ -19,22 +20,27 @@ FORMATTING GUIDELINES
 - Use numbered lists and bullet lists exactly as shown.
 - Do not use horizontal rules (---).
 - Keep paragraphs to 2-3 sentences.
+- Avoid generic AI phrases like "In conclusion", "It is important to note", etc.
 
 SECTION REQUIREMENTS
 
 1) workflow_description (markdown):
 \`\`\`
-## Overview
+## High-Level Summary
 
-[Write 2-3 concise paragraphs. Start with "This workflow..." or "The workflow...". Describe purpose, beneficiaries, and the problem solved.]
+[Write 2-3 concise paragraphs. Start with "This workflow..." or "The workflow...". Describe the core problem solved, the target audience, and the key outcome.]
 
-## Process
+## Key Features
+- **[Feature Name]:** [Brief description]
+- **[Feature Name]:** [Brief description]
 
+## Process Flow
 1. **Trigger:** [Explain how the workflow starts]
-2. **[...]** [Continue each node in execution order]
+2. **[Step Name]:** [Explain what happens next]
+...
+[Summarize the flow logically, grouping related steps if possible]
 
 ## Business Value
-
 [Single paragraph describing measurable impact: time saved, errors prevented, automation benefits.]
 \`\`\`
 
@@ -46,29 +52,40 @@ SECTION REQUIREMENTS
 \`\`\`
 - Embed the rendered SVG as a base64 data URI that visualizes every node and connection.
 
-3) nodes_settings (markdown):
+3) setup_instructions (markdown):
 \`\`\`
-## Node Configuration Details
+## Setup Instructions
+
+### Required Credentials
+- **[Credential Name]:** [Description of what it accesses]
+
+### Environment Variables
+- \`[VARIABLE_NAME]\`: [Description] (if applicable)
+
+### Configuration Steps
+1. [Step 1]
+2. [Step 2]
+\`\`\`
+
+4) nodes_settings (markdown):
+\`\`\`
+## Configuration Details
 
 ### 1. [Node Name]
-**Type:** \`[Node Type]\` | **Position:** Step X of N
+**Type:** \`[Node Type]\`
 
 [One sentence describing the node's role.]
 
-**Connections:**
-- ⬅️ **Input from:** [...]
-- ➡️ **Output to:** [...]
+**Important Settings:**
+- **[Setting Name]:** [Value/Description] (e.g., HTTP Method, URL, Webhook Path)
 
-[If expressions or code exist:]
 **Logic/Expression:**
 \`\`\`javascript
 [expression]
 \`\`\`
-
+(Only include if complex logic or expression is used)
 \`\`\`
-- Repeat for every node in execution order.
-- Include method, URL, credentials (as [Configured]/[Required]), filters, headers, important parameters.
-- Omit ids/typeVersion/position unless relevant.
+- Repeat for key nodes, numbering them sequentially (1. [Name], 2. [Name]...). Group related nodes if possible.
 - Sanitize sensitive values; never output secrets.
 
 ADDITIONAL CONTEXT
@@ -85,7 +102,7 @@ export async function summarizeWorkflow(workflow, options = {}) {
   if (!apiKey) {
     throw new Error(`${provider === "openai" ? "OpenAI" : "Anthropic"} API key is required for AI documentation.`);
   }
-  
+
   // Use the best model for each provider
   const model = provider === "openai" ? "gpt-3.5-turbo" : "claude-3-opus-20240229";
 
@@ -96,7 +113,7 @@ export async function summarizeWorkflow(workflow, options = {}) {
     .replace("{workflowJson}", workflowJson);
 
   let response;
-  
+
   if (provider === "openai") {
     response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -148,7 +165,7 @@ export async function summarizeWorkflow(workflow, options = {}) {
 
   const data = await response.json();
   let content;
-  
+
   if (provider === "openai") {
     content = data?.choices?.[0]?.message?.content;
   } else if (provider === "anthropic") {

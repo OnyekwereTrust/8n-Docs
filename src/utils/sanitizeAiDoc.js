@@ -1,7 +1,12 @@
 const SECTION_HEADINGS = [
+  "High-Level Summary",
+  "Key Features",
+  "Process Flow",
+  "Business Value",
+  "Setup Instructions",
+  "Configuration Details",
   "Overview",
   "Process",
-  "Business Value",
   "Use Cases",
   "Integrations",
   "Recommendations",
@@ -15,6 +20,11 @@ export function sanitizeAiDoc(input) {
   }
 
   let text = stripJsonCodeFence(String(input));
+
+  // Fix common AI formatting issues in JSON
+  text = text.replace(/\*\*"([^"]+)"\*\*\s*:/g, '"$1":'); // Remove bold keys
+  text = text.replace(/'([^']+)'\s*:/g, '"$1":'); // Replace single quotes on keys
+
   const compact = text.trim();
   if (compact.startsWith("{") && compact.endsWith("}")) {
     return compact;

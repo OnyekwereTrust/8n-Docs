@@ -1,16 +1,16 @@
 import { parseWorkflow } from "./utils/parseWorkflow.js";
-import { renderMarkdown } from "./utils/markdown.js";
+import { renderMarkdown, validateDocumentation } from "./utils/markdown.js";
 import { buildZip } from "./utils/zip.js";
 import { buildPrintHtml } from "./utils/pdf.js";
 import { summarizeWorkflow } from "./utils/summarizeWorkflow.js";
 import { sanitizeAiDoc } from "./utils/sanitizeAiDoc.js";
-import { 
-  saveApiKey, 
-  getStoredApiKey, 
-  saveProvider, 
-  getStoredProvider, 
-  saveModel, 
-  getStoredModel 
+import {
+  saveApiKey,
+  getStoredApiKey,
+  saveProvider,
+  getStoredProvider,
+  saveModel,
+  getStoredModel
 } from "./utils/storage.js";
 
 const elements = {
@@ -24,7 +24,7 @@ const elements = {
   readmePanel: null,
   readme: null,
   downloadZip: null,
-  downloadPdf: null,
+
   downloadJson: null,
   shareLink: null,
   shareContainer: null,
@@ -57,7 +57,7 @@ function cacheElements() {
   elements.readmePanel = document.getElementById("panel-readme");
   elements.readme = document.getElementById("readme-content");
   elements.downloadZip = document.getElementById("download-zip");
-  elements.downloadPdf = document.getElementById("download-pdf");
+
   elements.downloadJson = document.getElementById("download-json");
   elements.shareLink = document.getElementById("share-link");
   elements.shareContainer = document.getElementById("share-link-container");
@@ -211,17 +211,7 @@ function setupActions() {
     triggerDownload("docs.zip", url);
   });
 
-  elements.downloadPdf?.addEventListener("click", () => {
-    if (!state.documentation) return;
-    const html = buildPrintHtml(
-      {
-        readme: state.documentation,
-        title: state.meta?.title || "Auto-Docs for n8n",
-      },
-      { autoPrint: true }
-    );
-    openPrintPreview(html);
-  });
+
 
   elements.downloadJson?.addEventListener("click", () => {
     if (!state.originalText) return;
@@ -460,7 +450,7 @@ async function runApiKeyValidation(key) {
 
   try {
     let response;
-    
+
     if (state.selectedProvider === "openai") {
       response = await fetch("https://api.openai.com/v1/models?limit=1", {
         method: "GET",
@@ -662,7 +652,7 @@ function resetToUpload() {
 
 async function handleFile(file) {
   resetError();
-  
+
   // Validate file type
   if (!isJsonFile(file)) {
     setError("Please provide a .json file exported from n8n.");
@@ -692,14 +682,14 @@ async function handleFile(file) {
 
   try {
     const text = await file.text();
-    
+
     // Validate JSON content before parsing
     if (!text || text.trim().length === 0) {
       throw new Error("File appears to be empty or invalid.");
     }
-    
+
     const { workflow, meta } = parseWorkflow(text);
-    
+
     setAiStatus("Validating API key...", "loading", { loading: true });
     const keyValid = await ensureApiKeyValid();
     if (!keyValid) {
@@ -723,6 +713,10 @@ async function handleFile(file) {
     }
 
     const cleanDoc = sanitizeAiDoc(documentation.trim());
+
+    if (!validateDocumentation(cleanDoc)) {
+      throw new Error("Unable to process workflow, try again.");
+    }
 
     setAiStatus("Documentation generated via AI.", "success");
     state.apiKeyValid = true;

@@ -1,148 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auto-Docs for n8n</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body class="panel">
-    <header class="top-bar" role="banner">
-      <div class="brand">
-        <img src="../assets/logo.svg" alt="Auto-Docs for n8n" class="brand-logo" />
-        <span class="brand-name">Auto-Docs for n8n</span>
-        <span class="file-name" id="file-name" aria-live="polite"></span>
-      </div>
-      <nav class="stepper" aria-label="Workflow documentation steps">
-        <div class="step active" id="step-upload">
-          <span class="step-index">1</span>
-          <span class="step-label">Upload Workflow</span>
-        </div>
-        <div class="step" id="step-review">
-          <span class="step-index">2</span>
-          <span class="step-label">Review Documentation</span>
-        </div>
-      </nav>
-      <div class="header-actions">
-        <button
-          id="ai-settings-button"
-          type="button"
-          class="secondary ai-settings-button"
-          aria-haspopup="dialog"
-          aria-expanded="false"
-        >
-          AI Settings
-        </button>
-        <button id="restart" type="button" class="secondary" hidden>Back to Upload</button>
-      </div>
-    </header>
 
-    <div
-      class="ai-settings-panel hidden"
-      id="ai-settings-panel"
-      role="dialog"
-      aria-modal="false"
-      aria-labelledby="ai-settings-title"
-    >
-      <header class="ai-settings-header">
-        <h2 id="ai-settings-title">AI Settings</h2>
-        <button id="ai-settings-close" class="icon-button" type="button" aria-label="Close AI settings">
-          <span aria-hidden="true">×</span>
-        </button>
-      </header>
-      <div class="ai-settings-body">
-        <div class="ai-field">
-          <label for="ai-provider">Provider</label>
-          <select id="ai-provider" class="ai-select">
-            <option value="openai">OpenAI</option>
-            <option value="anthropic">Anthropic</option>
-          </select>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auto-Docs for n8n</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-
-        <div class="ai-field">
-          <label for="ai-api-key" id="api-key-label">API Key</label>
-          <input
-            type="password"
-            id="ai-api-key"
-            placeholder="Enter your API key"
-            autocomplete="off"
-            aria-label="API key for selected AI provider"
-          />
-        </div>
-
-        <p class="ai-hint">
-          Your key stays local and is never stored on our servers.
-          <a href="#" id="provider-docs" target="_blank" rel="noopener">Get an API key</a>
-        </p>
-        <p class="ai-status" id="ai-status" role="status" aria-live="polite"></p>
-      </div>
+<body class="panel">
+  <header class="top-bar" role="banner">
+    <div class="brand">
+      <img src="../assets/logo.svg" alt="Auto-Docs for n8n" class="brand-logo" />
+      <span class="brand-name">Auto-Docs for n8n</span>
+      <span class="file-name" id="file-name" aria-live="polite"></span>
     </div>
+    <nav class="stepper" aria-label="Workflow documentation steps">
+      <div class="step active" id="step-upload">
+        <span class="step-index">1</span>
+        <span class="step-label">Upload Workflow</span>
+      </div>
+      <div class="step" id="step-review">
+        <span class="step-index">2</span>
+        <span class="step-label">Review Documentation</span>
+      </div>
+    </nav>
+    <div class="header-actions">
+      <button id="ai-settings-button" type="button" class="secondary ai-settings-button" aria-haspopup="dialog"
+        aria-expanded="false">
+        AI Settings
+      </button>
+      <button id="restart" type="button" class="secondary" hidden>Back to Upload</button>
+      <a class="header-icon-link" href="https://github.com/OnyekwereTrust/8n-Docs" target="_blank"
+        rel="noopener noreferrer" aria-label="View 8n Docs on GitHub">
+        <img src="../assets/github.svg" alt="" />
+      </a>
+    </div>
+  </header>
 
-    <main class="panel-content">
-      <section
-        class="upload-view"
-        id="upload-view"
-        aria-label="Workflow upload area"
-        tabindex="0"
-      >
-        <div class="upload-area" id="upload-area">
-          <div class="dropzone" id="dropzone">
-            <div class="dropzone-inner">
-              <span class="dropzone-badge">workflow.json</span>
-              <h2 class="dropzone-title">Step 1 · Drop your workflow</h2>
-              <p class="dropzone-subtitle">
-                Drag an n8n export here or browse to generate curated documentation end to end.
-              </p>
-              <div class="dropzone-actions">
-                <span class="dropzone-divider" aria-hidden="true">or</span>
-                <label class="file-input-label">
-                  <input
-                    type="file"
-                    id="file-input"
-                    accept=".json,application/json"
-                    aria-label="Choose workflow JSON file"
-                  />
-                  Choose file
-                </label>
-              </div>
+  <div class="ai-settings-panel hidden" id="ai-settings-panel" role="dialog" aria-modal="false"
+    aria-labelledby="ai-settings-title">
+    <header class="ai-settings-header">
+      <h2 id="ai-settings-title">AI Settings</h2>
+      <button id="ai-settings-close" class="icon-button" type="button" aria-label="Close AI settings">
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+    <div class="ai-settings-body">
+      <div class="ai-field">
+        <label for="ai-provider">Provider</label>
+        <select id="ai-provider" class="ai-select">
+          <option value="openai">OpenAI</option>
+          <option value="anthropic">Anthropic</option>
+        </select>
+      </div>
+
+
+      <div class="ai-field">
+        <label for="ai-api-key" id="api-key-label">API Key</label>
+        <input type="password" id="ai-api-key" placeholder="Enter your API key" autocomplete="off"
+          aria-label="API key for selected AI provider" />
+      </div>
+
+      <p class="ai-hint">
+        Your key stays local and is never stored on our servers.
+        <a href="#" id="provider-docs" target="_blank" rel="noopener">Get an API key</a>
+      </p>
+      <p class="ai-status" id="ai-status" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <main class="panel-content">
+    <section class="upload-view" id="upload-view" aria-label="Workflow upload area" tabindex="0">
+      <div class="upload-area" id="upload-area">
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-inner">
+            <span class="dropzone-badge">workflow.json</span>
+            <h2 class="dropzone-title">Step 1 · Drop your workflow</h2>
+            <p class="dropzone-subtitle">
+              Drag an n8n export here to generate curated documentation end to end.
+            </p>
+            <div class="dropzone-actions">
+              <span class="dropzone-divider" aria-hidden="true">or</span>
+              <label class="file-input-label">
+                <input type="file" id="file-input" accept=".json,application/json"
+                  aria-label="Choose workflow JSON file" />
+                Choose file
+              </label>
             </div>
           </div>
-          <p class="upload-note">
-            Files stay local. Credentials are stripped automatically before documentation is generated.
+        </div>
+        <p class="upload-note">
+          Files stay local. Credentials are stripped automatically before documentation is generated.
+        </p>
+        <p class="upload-error" id="upload-error" role="alert" aria-live="assertive"></p>
+      </div>
+    </section>
+
+    <section class="docs-view hidden" id="docs-view" aria-live="polite">
+      <header class="docs-header">
+        <div>
+          <h2>Step 2 · Review documentation</h2>
+          <p>
+            AI-generated documentation tailored to your workflow. Download the PDF once ready.
           </p>
-          <p class="upload-error" id="upload-error" role="alert" aria-live="assertive"></p>
         </div>
-      </section>
+        <div class="docs-actions">
 
-      <section class="docs-view hidden" id="docs-view" aria-live="polite">
-        <header class="docs-header">
-          <div>
-            <h2>Step 2 · Review documentation</h2>
-            <p>
-              AI-generated documentation tailored to your workflow. Download the PDF once ready.
-            </p>
-          </div>
-          <div class="docs-actions">
-            <button id="download-pdf" type="button" disabled>Download PDF</button>
-          </div>
-        </header>
-
-        <div class="docs-output" id="panel-readme" tabindex="0">
-          <div id="readme-content" class="markdown-body"></div>
         </div>
-      </section>
-    </main>
+      </header>
 
-    <footer class="panel-footer">
-      <p>Made with ❤️ for the n8n Community</p>
-    </footer>
+      <div class="docs-output" id="panel-readme" tabindex="0">
+        <div id="readme-content" class="markdown-body"></div>
+      </div>
+    </section>
+  </main>
 
-    <div class="global-loader hidden" id="global-loader" role="alert" aria-live="assertive">
-      <span class="spinner spinner--inverted spinner--large" aria-hidden="true"></span>
-      <span class="global-loader__message">Generating documentation…</span>
-    </div>
+  <footer class="panel-footer">
+    <p>Made with ❤️ for the n8n Community</p>
+  </footer>
 
-    <script type="module" src="panel.js"></script>
-  </body>
+  <div class="global-loader hidden" id="global-loader" role="alert" aria-live="assertive">
+    <span class="spinner spinner--inverted spinner--large" aria-hidden="true"></span>
+    <span class="global-loader__message">Generating documentation…</span>
+  </div>
+
+  <script type="module" src="panel.js"></script>
+</body>
+
 </html>

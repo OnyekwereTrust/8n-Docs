@@ -129,6 +129,30 @@ body {
   align-items: center;
 }
 
+.header-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.header-icon-link:hover,
+.header-icon-link:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+}
+
+.header-icon-link img {
+  width: 20px;
+  height: 20px;
+}
+
 .secondary {
   background: rgba(0, 0, 0, 0.6);
   color: #ffffff;
@@ -365,12 +389,17 @@ button:focus-visible {
 }
 
 .upload-error {
-  color: var(--accent);
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.1);
+  border: 1px solid rgba(255, 77, 79, 0.2);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   font-weight: 600;
   min-height: 1.2rem;
-  margin-top: 0.75rem;
+  margin-top: 1rem;
   user-select: text;
   cursor: text;
+  display: inline-block;
 }
 
 .ai-settings-button {

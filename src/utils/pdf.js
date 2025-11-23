@@ -186,6 +186,11 @@ function buildDocumentationSections(readme) {
             wrapSection("Workflow Diagram", renderMarkdown(parsed.workflow_diagram))
           );
         }
+        if (parsed.setup_instructions) {
+          parts.push(
+            wrapSection("Setup Instructions", renderMarkdown(parsed.setup_instructions))
+          );
+        }
         if (parsed.nodes_settings) {
           parts.push(
             wrapSection("Node Configuration Details", renderMarkdown(parsed.nodes_settings))
